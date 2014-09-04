@@ -4,7 +4,7 @@
 Plugin Name: WP-Whoami
 Plugin URI: http://lloc.de/
 Description: Just another widget to show a photo, a bio and some social media links with nice webfont-icons
-Version: 0.3
+Version: 0.4
 Author: Dennis Ploetner
 Author URI: http://lloc.de/
 */
@@ -49,7 +49,7 @@ class Whoami_Widget extends WP_Widget {
             $this->get_field_id( 'title' ),
             __( 'Title:', 'whoami' ),
             $this->get_field_name( 'title' ),
-            attribute_escape( $instance['title'] ),
+            esc_attr( $instance['title'] ),
             __( 'Author:', 'whoami' ),
             wp_dropdown_users( array( 'name' => 'author', 'echo' => false ) )
         );
@@ -57,8 +57,8 @@ class Whoami_Widget extends WP_Widget {
 
     public function update( $new_instance, $old_instance ) {
         $instance = $old_instance;
-        $instance['title']  = $new_instance['title'];
-        $instance['author'] = $new_instance['author'];
+        $instance['title']  = ( isset( $new_instance['title'] )  ? $new_instance['title']  : '' );
+        $instance['author'] = ( isset( $new_instance['author'] ) ? $new_instance['author'] : '' );
         return $instance;
     }
 
@@ -115,9 +115,9 @@ class Whoami_Admin {
             if ( ! isset( $ucmethods[$key] ) ) {
                 $ucmethods[$key] = $value[0];
 			}
-        }
-        $ucmethods[$this->bio_input_name()] = __( 'Bio', 'whoami' );
-        return $ucmethods;
+		}
+		$ucmethods[$this->bio_input_name()] = __( 'Bio', 'whoami' );
+		return $ucmethods;
 	}
 
 }
@@ -155,7 +155,7 @@ class Whoami_Frontend extends Whoami_Admin {
             $href = get_user_meta( $user_id, $key, true );
             if ( ! empty( $href ) ) {
                 if ( has_filter( 'whoami_frontend_get_li' ) ) {
-                    $temp .= (string) apply_filters(
+                    $temp .= ( string ) apply_filters(
                         'whoami_frontend_get_li',
                         $key,
                         $value,
@@ -197,7 +197,7 @@ class Whoami_Frontend extends Whoami_Admin {
                 $user_id,
                 $this
 			);
-        }
+		}
         else {
             $temp = sprintf(
                 '<p>%s%s</p>%s',
@@ -211,6 +211,10 @@ class Whoami_Frontend extends Whoami_Admin {
 
 }
 
+/**
+ * Prints the bio - stored in the current blog - of a specific user
+ * @param int $user_id
+ */
 function the_whoami_bio( $user_id ) {
 	echo get_user_meta( $user_id, Whoami_Frontend::instance()->bio_input_name(), true );
 }

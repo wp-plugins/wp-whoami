@@ -4,8 +4,8 @@ Contributors: realloc
 Donate link: http://www.greenpeace.org/international/
 Tags: widget, author, bio, social media
 Requires at least: 3.1
-Tested up to: 3.9
-Stable tag: 0.3
+Tested up to: 4.0
+Stable tag: 0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,8 +27,11 @@ The plugin is using the JustVector Social Icons Font created by [Alex Peattie](h
 
 == Changelog ==
 
+= 0.4 =
+* Bugfixes strict mode
+
 = 0.3 =
-* new function `the_whoami_bio` for eching the bio of a specific user
+* new function `the_whoami_bio` for echoing the bio of a specific user
 * some minor improvements
 
 = 0.2 =
